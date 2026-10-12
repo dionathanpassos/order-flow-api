@@ -1,4 +1,4 @@
 package com.github.dionathanpassos.order_flow_api.domain.user;
 
-public class UserController {
+public class UserService {
 }
