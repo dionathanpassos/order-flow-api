@@ -1,7 +1,7 @@
 package com.github.dionathanpassos.order_flow_api.exception;
 
-public class ResourceNotFoundException extends RuntimeException {
-    public ResourceNotFoundException(String message) {
+public class ConflictException extends RuntimeException {
+    public ConflictException(String message) {
         super(message);
     }
 }
