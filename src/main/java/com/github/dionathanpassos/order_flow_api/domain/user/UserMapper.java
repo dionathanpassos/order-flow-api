@@ -14,7 +14,8 @@ public interface UserMapper {
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "role", source = "role")
     @Mapping(target = "password", source = "encodedPassword")
-    User toEntity(RegisterRequestDTO requestDTO, String encodedPassword, Role role);
+    @Mapping(target = "email", source = "normalizedEmail")
+    User toEntity(RegisterRequestDTO requestDTO, String normalizedEmail, String encodedPassword, Role role);
 
 
     RegisterResponseDTO fromEntity(User user);
