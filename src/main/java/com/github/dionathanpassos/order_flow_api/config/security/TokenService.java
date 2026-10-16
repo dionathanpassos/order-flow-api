@@ -44,21 +44,6 @@ public class TokenService {
 
     }
 
-    public String generateRefreshToken(User user) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.create()
-                    .withIssuer(ISSUER)
-                    .withAudience(AUDIENCE)
-                    .withClaim("type", "refresh")
-                    .withSubject(user.getId().toString())
-                    .withExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS))
-                    .sign(algorithm);
-        } catch (JWTCreationException exception){
-            throw new RuntimeException("Erro ao gerar token");
-        }
-    }
-
     public ResponseCookie generateRefreshTokenCookie(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);

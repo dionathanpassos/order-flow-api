@@ -37,6 +37,7 @@ public class RefreshSessionService {
         refreshSessionRepository.save(session);
     }
 
+    @Transactional
     public void updateSession(String refreshToken, String newRefreshToken) {
 
         String tokenHash = tokenService.generateHash(refreshToken);

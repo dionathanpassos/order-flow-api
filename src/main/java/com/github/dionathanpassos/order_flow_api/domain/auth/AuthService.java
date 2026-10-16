@@ -48,9 +48,10 @@ public class AuthService {
     }
 
     public LoginResponseDTO login(@Valid LoginRequestDTO requestDTO) {
+        String normalizedEmail = requestDTO.email().trim().toLowerCase();
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(requestDTO.email(), requestDTO.password())
+                new UsernamePasswordAuthenticationToken(normalizedEmail, requestDTO.password())
         );
 
         User user = (User) authentication.getPrincipal();
