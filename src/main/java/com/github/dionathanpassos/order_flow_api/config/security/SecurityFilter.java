@@ -56,6 +56,8 @@ public class SecurityFilter extends OncePerRequestFilter {
                     response,
                     new BadCredentialsException("Token inválido ou expirado")
             );
+
+            return;
         }
         filterChain.doFilter(request, response);
 
@@ -68,6 +70,6 @@ public class SecurityFilter extends OncePerRequestFilter {
             return null;
         }
 
-        return authHeader.replace("Bearer ", "");
+        return authHeader.substring(7);
     }
 }

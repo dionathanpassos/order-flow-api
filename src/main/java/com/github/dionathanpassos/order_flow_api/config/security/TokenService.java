@@ -1,17 +1,14 @@
 package com.github.dionathanpassos.order_flow_api.config.security;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.github.dionathanpassos.order_flow_api.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -45,27 +42,25 @@ public class TokenService {
     }
 
     public ResponseCookie generateRefreshTokenCookie(User user) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            String refreshTokenJwt = JWT.create()
-                    .withIssuer(ISSUER)
-                    .withAudience(AUDIENCE)
-                    .withClaim("type", "refresh")
-                    .withSubject(user.getId().toString())
-                    .withExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS))
-                    .sign(algorithm);
 
-            return ResponseCookie.from("refreshToken", refreshTokenJwt)
-                    .httpOnly(true)
-                    .secure(true)
-                    .path("/api/v1/auth")
-                    .maxAge(7 * 24 * 60 * 60)
-                    .sameSite("Strict")
-                    .build();
+        Algorithm algorithm = Algorithm.HMAC256(secret);
+        String refreshTokenJwt = JWT.create()
+                .withIssuer(ISSUER)
+                .withAudience(AUDIENCE)
+                .withClaim("type", "refresh")
+                .withSubject(user.getId().toString())
+                .withExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS))
+                .sign(algorithm);
 
-        } catch (JWTCreationException exception){
-            throw new RuntimeException("Erro ao gerar token");
-        }
+        return ResponseCookie.from("refreshToken", refreshTokenJwt)
+                .httpOnly(true)
+                .secure(true)
+                .path("/api/v1/auth")
+                .maxAge(7 * 24 * 60 * 60)
+                .sameSite("Strict")
+                .build();
+
+
     }
 
     public String verifyAccessToken(String token) {
@@ -86,7 +81,7 @@ public class TokenService {
         String type = decodedJWT.getClaim("type").asString();
 
         if(!"refresh".equals(type)) {
-            throw new JWTVerificationException("Tipo de token inválido. Esperado: access");
+            throw new JWTVerificationException("Tipo de token inválido. Esperado: refresh");
         }
 
         return decodedJWT;

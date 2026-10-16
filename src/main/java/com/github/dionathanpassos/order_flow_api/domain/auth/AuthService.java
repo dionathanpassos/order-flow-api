@@ -70,7 +70,7 @@ public class AuthService {
     @Transactional
     public RefreshTokenResponseDTO renewAccessToken(String refreshToken) {
 
-        if (refreshToken == null) {
+        if (refreshToken == null || refreshToken.isBlank()) {
             throw new InvalidRefreshTokenException("Acesso negado. Sessão inválida ou expirada.");
         }
 
