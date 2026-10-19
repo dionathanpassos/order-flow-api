@@ -41,7 +41,13 @@ public class AuthService {
 
         String encodedPassword = passwordEncoder.encode(requestDTO.password());
 
-        User user = userMapper.toEntity(requestDTO, normalizedEmail, encodedPassword, Role.ROLE_CUSTOMER);
+        User user = User.createUser(
+                requestDTO.firstName(),
+                requestDTO.lastName(),
+                normalizedEmail,
+                encodedPassword,
+                Role.ROLE_CUSTOMER
+        );
         User saved =userRepository.save(user);
 
         return userMapper.fromEntity(saved);

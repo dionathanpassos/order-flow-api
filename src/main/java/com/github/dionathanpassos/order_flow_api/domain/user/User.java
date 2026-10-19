@@ -51,6 +51,24 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public static User createUser(
+            String firstName,
+            String lastName,
+            String normalizedEmail,
+            String encodedPassword,
+            Role role
+    ) {
+        User user = new User();
+
+        user.firstName = firstName;
+        user.lastName = lastName;
+        user.email = normalizedEmail;
+        user.password = encodedPassword;
+        user.role = role;
+
+        return user;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
